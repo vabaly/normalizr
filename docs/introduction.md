@@ -2,15 +2,27 @@
 
 ## Motivation
 
+动机
+
 Many APIs, public or not, return JSON data that has deeply nested objects. Using data in this kind of structure is often very difficult for JavaScript applications, especially those using [Flux](http://facebook.github.io/flux/) or [Redux](http://redux.js.org/).
+
+许多 API（无论是否公开）都会返回具有深层嵌套对象的 JSON 数据。 对于 JavaScript 应用程序而言，使用这样的数据通常非常难受，尤其是那些使用 [Flux](http://facebook.github.io/flux) 或 [Redux](http://redux.js.org/) 的应用。
 
 ## Solution
 
+解决方案
+
 Normalizr is a small, but powerful utility for taking JSON with a schema definition and returning nested entities with their IDs, gathered in dictionaries.
+
+Normalizr 是一个小巧但功能强大的工具，它通过预先定义的模式来解析 JSON，并返回嵌套在字典中的 ID 及其嵌套实体。
 
 ### Example
 
+例子
+
 The following nested object:
+
+下列嵌套对象：
 
 ```js
 [
@@ -34,6 +46,8 @@ The following nested object:
 ```
 
 Can be normalized to:
+
+可以被规范化为：
 
 ```js
 {
@@ -63,7 +77,11 @@ Can be normalized to:
 
 ## Build Files
 
+打包后的文件
+
 Normalizr is built for various environments
+
+Normalizr 适用于各种环境
 
 - `src/*`
   - CommonJS, unpacked files. These are the recommended files for use with your own package bundler and are the default in-point as defined by this modules `package.json`.
