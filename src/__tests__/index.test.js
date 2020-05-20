@@ -18,6 +18,7 @@ describe('normalize', () => {
   });
 
   test('normalizes entities', () => {
+    // {"_key":"tacos","_idAttribute":"id","schema":{}}
     const mySchema = new schema.Entity('tacos');
 
     expect(normalize([{ id: 1, type: 'foo' }, { id: 2, type: 'bar' }], [mySchema])).toMatchSnapshot();
@@ -36,14 +37,14 @@ describe('normalize', () => {
   });
 
   test('normalizes nested entities', () => {
-    const user = new schema.Entity('users');
+    const user = new schema.Entity('users'); // {"_key":"users","_idAttribute":"id","schema":{}}
     const comment = new schema.Entity('comments', {
       user: user
-    });
+    }); // {"_key":"comments","_idAttribute":"id","schema":{"user":{"_key":"users","_idAttribute":"id","schema":{}}}}
     const article = new schema.Entity('articles', {
       author: user,
       comments: [comment]
-    });
+    }); // {"_key":"articles","_idAttribute":"id","schema":{"author":{"_key":"users","_idAttribute":"id","schema":{}},"comments":[{"_key":"comments","_idAttribute":"id","schema":{"user":{"_key":"users","_idAttribute":"id","schema":{}}}}]}}
 
     const input = {
       id: '123',

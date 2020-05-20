@@ -5,7 +5,15 @@ import ValuesSchema from './schemas/Values';
 import ArraySchema, * as ArrayUtils from './schemas/Array';
 import ObjectSchema, * as ObjectUtils from './schemas/Object';
 
+// eg:
+// value: [{"id":1,"type":"foo"},{"id":2,"type":"bar"}]
+// parent: [{"id":1,"type":"foo"},{"id":2,"type":"bar"}]
+// key: null
+// schema: [{"_key":"tacos","_idAttribute":"id","schema":{}}]
+// addEntity: Function
+// visitedEntities: {}
 const visit = (value, parent, key, schema, addEntity, visitedEntities) => {
+  // value 必须得是对象
   if (typeof value !== 'object' || !value) {
     return value;
   }
@@ -18,6 +26,7 @@ const visit = (value, parent, key, schema, addEntity, visitedEntities) => {
   return schema.normalize(value, parent, key, visit, addEntity, visitedEntities);
 };
 
+// 返回一个函数，entities = {}
 const addEntities = (entities) => (schema, processedEntity, value, parent, key) => {
   const schemaKey = schema.key;
   const id = schema.getId(value, parent, key);
@@ -41,6 +50,8 @@ export const schema = {
   Values: ValuesSchema
 };
 
+// eg: input: [{"id":1,"type":"foo"},{"id":2,"type":"bar"}]
+//    schema: [{"_key":"tacos","_idAttribute":"id","schema":{}}]
 export const normalize = (input, schema) => {
   if (!input || typeof input !== 'object') {
     throw new Error(
@@ -49,7 +60,7 @@ export const normalize = (input, schema) => {
       }".`
     );
   }
-
+  // input: {"id":"123","title":"A Great Article","author":{"id":"8472","name":"Paul"},"body":"This article is great.","comments":[{"id":"comment-123-4738","comment":"I like it!","user":{"id":"10293","name":"Jane"}}]}, schema: {"_key":"articles","_idAttribute":"id","schema":{"author":{"_key":"users","_idAttribute":"id","schema":{}},"comments":[{"_key":"comments","_idAttribute":"id","schema":{"user":{"_key":"users","_idAttribute":"id","schema":{}}}}]}}
   const entities = {};
   const addEntity = addEntities(entities);
   const visitedEntities = {};

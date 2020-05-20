@@ -1,5 +1,6 @@
 import PolymorphicSchema from './Polymorphic';
 
+// schema 如果是数组的话，必须得是一个元素的数组，下标为 0 的元素即为合法的 schema
 const validateSchema = (definition) => {
   const isArray = Array.isArray(definition);
   if (isArray && definition.length > 1) {

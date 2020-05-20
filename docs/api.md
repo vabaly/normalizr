@@ -158,9 +158,23 @@ const normalizedData = normalize(data, myArray);
 
 ### `Entity(key, definition = {}, options = {})`
 
+这个方法是指这样访问的方法：
+
+```ts
+import { schema } from 'normalizr';
+
+new schema.Entity(key, definition, options)
+```
+
 - `key`: **required** The key name under which all entities of this type will be listed in the normalized response. Must be a string name.
+
+  `key`：**必传**，属性名称，在该名称下所有此类实体将在规范化响应中列出。必须为字符串。
+
 - `definition`: A definition of the nested entities found within this entity. Defaults to empty object.  
   You _do not_ need to define any keys in your entity other than those that hold nested entities. All other values will be copied to the normalized entity's output.
+
+  `definition`：在该实体内发现的嵌套实体的定义。 默认为空对象。您不需要在实体中定义除保留嵌套实体的键以外的任何键。所有其他值将被复制到标准化实体的输出。
+
 - `options`:
   - `idAttribute`: The attribute where unique IDs for each of this entity type can be found.  
     Accepts either a string `key` or a function that returns the IDs `value`. Defaults to `'id'`.  

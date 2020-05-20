@@ -1,15 +1,18 @@
 import * as ImmutableUtils from './ImmutableUtils';
 
+// 返回一个函数，这个函数接收一个对象，获取对象的 idAttribute 属性的值
 const getDefaultGetId = (idAttribute) => (input) =>
   ImmutableUtils.isImmutable(input) ? input.get(idAttribute) : input[idAttribute];
 
 export default class EntitySchema {
   constructor(key, definition = {}, options = {}) {
+    // key 必须得有，且必须是字符串. eg: key = 'tacos'
     if (!key || typeof key !== 'string') {
       throw new Error(`Expected a string key for Entity, but found ${key}.`);
     }
 
     const {
+      // string | function，function 时即为获取 object 表示 <id> 属性值的方法
       idAttribute = 'id',
       mergeStrategy = (entityA, entityB) => {
         return { ...entityA, ...entityB };
@@ -19,8 +22,11 @@ export default class EntitySchema {
     } = options;
 
     this._key = key;
+    // 得到一个获取一个对象的 ID 值的方法，这个 ID 并不一定是属性名就叫 id，也可以叫 key 之类的
     this._getId = typeof idAttribute === 'function' ? idAttribute : getDefaultGetId(idAttribute);
+    // id 名称或获取 ID 值的方法
     this._idAttribute = idAttribute;
+    // TODO: 等回过头来解释这些属性
     this._mergeStrategy = mergeStrategy;
     this._processStrategy = processStrategy;
     this._fallbackStrategy = fallbackStrategy;
@@ -53,7 +59,7 @@ export default class EntitySchema {
   fallback(id, schema) {
     return this._fallbackStrategy(id, schema);
   }
-
+  //
   normalize(input, parent, key, visit, addEntity, visitedEntities) {
     const id = this.getId(input, parent, key);
     const entityType = this.key;
